@@ -1,0 +1,33 @@
+1.    In the Linux system, what is the correlation between, hdd out of space and socket file ?
+   	Why we cannot perform a connection if our harddrive space is running out.
+Basically, everything in linux is a file, including socket file. So when we want to perform connection, it will create a socket file. If our hdd is full, it cannot create a socket file, and it cannot perform a connection.
+ 
+2.    How to whitelist user on ssh login, without removing their public key on the servers ?
+We can add user and and use AllowUser option in /etc/ssh/sshd_config
+ 
+3.    My lead ask me to check uptime in 200 server, it is really takes time if i have to ssh into every server and run the uptime command.Write ansible adhoc command to solve this, just adhoc command, no need use playbook.And your ansible inventory is ready.
+ansible all -m command -a “uptime” -u ec2-user --private-key diamun.pem -i hosts.yml
+ 
+4.    What is the first step you do if you want to generate SSL certificate ? 
+Install openssl then generate key and csr
+ 
+5.    I have a web page,
+https://www.sehatq.com/abc/def
+My boss want me to redirect to page to /
+How to do this on NGINX web server ? create the NGINX rewrite rules for this case.
+ 
+server {
+    listen 80;
+    server_name www.sehatq.com;
+ 
+    rewrite ^/abc/def /;
+ 
+    location / {
+        return 200 "Helo root";
+    }
+ 
+6.    One of QA engineer got an issue when uploading a file to our backend, she got 413 error codes. What is the meaning of those HTTP code and how to solve it on NGINX configuration ?
+Error 413 means Entity to Large.  So to solve it we have to change value configuration in nginx client_max_body_size to to provide the uploaded file, or we have to upload the smaller file below  client_max_body_size.
+ 
+7.    What is the meaning of the orphan process ? How does that happen ?
+Orphan process is a process that still running even though the parent process has finished or terminated. It can be happen when the parent process is crash or terminated.

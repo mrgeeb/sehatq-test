@@ -1,0 +1,29 @@
+ 
+1. If i have workload with memory centric, what ec2 instance type must i choose ?
+r* (r4,r5, or r6), u-*, x* (x1, x1e, or x2gd), and z1d
+ 
+2. I have two instances, deployed in same region and same availability zone, what else should  i do to reduce latency between this instance ?
+It have to places in private subnet so they will communicate with private IP as internal network
+ 
+3. If you have two VPC, how to connect them ?
+With VPC peering we can connecting two or more different VPC with private IP that have different cidr.
+ 
+4. How to make private subnet on VPC can access the internet ? explain the steps  in details
+We can use NAT gateway or NAT instance as an outgoing gateway to internet. Create NAT gateway/Nat instance in public subnet, and from private subnet, we create route table, so traffic that have destination to 0.0.0.0/0 are route to the NAT gateway/NAT instance IP address.
+ 
+5. If you create External Load Balancer (ELB), what subnet must attach to this Load Balancer to make it accessible from Internet ?
+Public Subnet
+ 
+6. Which one is fast ? ALB or NLB, explain why.
+There is no exact resource that explain what is the faster between ALB and ELB. But theoretically, NLB is faster than ALB, because NLB run at layer 4 (TCP/UDP) and ALB run at layer 7 (HTTP/HTTPS) 
+ 
+7. Whats is the difference between S3 and S3 Glacier ? and when to use them
+S3 can extract data that saved realtime, while glacier takes time to extract data ( depend on type of extraction)
+S3 is used  to saved data can be accessible fast, while glacier usually to create an archive of data
+ 
+8. What is the difference between EBS and EFS ?
+EBS is high performance per instance block, means it only can be mounted in one ec2 instance and it’s like physical hard drive in our laptop while EFS can be mounted to more than one ec2 instance, and its main feature is its scalability. EFS can grow or shrink according to demand, with more and more files being added without disturbing your application or having to provision new infrastructure.
+ 
+9. I already have SSL certificate and key, what AWS service must i use to do SSL termination on ELB ?
+ELB it self support for ssl termination, so we can put the ssl cert and key at those specific ELB.
+ 

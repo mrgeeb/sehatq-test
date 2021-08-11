@@ -1,0 +1,38 @@
+1.    What is the difference between ingress controller and ingress resources
+Ingress controller is a pod that manage, reading, and processing ingress resource.
+Ingress Resource is a file that control ingress routing
+ 
+2.    In managed kubernetes service (EKS, GKE, AKS ) what will happen when you install ingress controller ?
+It will create pod of ingress controller
+ 
+3.    I already deployed HPA (Horizontal Pod Autoscaler ) but it seems the HPA didn’t get the metric (unknown). In your experience, what could be the cause of this issue ?
+Install metrics-server so metrics will appear when we run top node or top pod
+	
+4.    Take a backup of the etcd cluster and save it to /tmp/etcd-backup.db
+ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
+ --cacert=<trusted-ca-file> --cert=<cert-file> --key=<key-file> \
+ snapshot save /tmp/etcd-backup.db
+
+
+5.    Create a Pod called redis-storage with image: redis:alpine with a Volume of type emptyDir that lasts for the life of the Pod. Specs on the right. Just write the manifest
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+spec:
+  containers:
+  - name: redis
+    image: redis-alpine
+    volumeMounts:
+    - name: redis-storage
+      mountPath: /data/redis
+  volumes:
+  - name: redis-storage
+    emptyDir: {}
+ 
+ 
+6.    How to get the internal IP address of all nodes using jsonpath
+kubectl get nodes -o json | jq '.items[].status.addresses[] | select(.type=="InternalIP") | .address'
+ 
+7.    What is the difference between taint and toleration and when to use it ?
+Taint and toleration are used to set restriction on what pod can be scheduled on a node. Taint is set to the node, while toleration is set to a pod. A node that set a Taint, it cannot be placed with any pod, except the specific pod that have toleration with a specific tain node but the pod that have mark as toleration to specific node can be placed in that node or at the other node that have no taint at all. 
